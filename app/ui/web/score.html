@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Notecryption OSMD</title>
+    <style>
+      body { margin: 0; background: #2b2b2b; }
+      #osmd {
+        padding: 14px;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="osmd"></div>
+
+    <!-- Local OSMD bundle (place osmd.min.js next to this file) -->
+    <script src="osmd.min.js"></script>
+
+    <script>
+      let osmd = null;
+
+      async function renderMusicXML(xmlText) {
+        if (!osmd) {
+            osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmd", {
+                backend: "svg",
+                drawTitle: false,
+                autoResize: true,
+                stretchLastSystemLine: true,
+                drawingParameters: "compacttight"
+                });
+        }
+        await osmd.load(xmlText);
+        osmd.render();
+      }
+
+      // PyQt calls this via runJavaScript()
+      window.__renderMusicXML = renderMusicXML;
+    </script>
+  </body>
+</html>
